@@ -22,6 +22,10 @@ const routes: Routes = [
       {
         path: '',
         loadComponent: () => import('./pages/kmp/dashboard/dashboard.component').then(c => c.DashboardComponent)
+      },
+      {
+        path: 'todo',
+        loadComponent: () => import('./pages/kmp/todo/todo.component').then(c => c.TodoComponent)
       }
     ]
   },
