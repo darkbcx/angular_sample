@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TodoService } from 'src/app/core/todo.service';
 import { catchError, from, of, startWith } from 'rxjs';
@@ -18,7 +18,9 @@ export class TodoComponent implements OnInit {
   ngOnInit(): void {
     this.todoService.onCreate.subscribe(res => {
       console.log('ON CREATE SUB : ', res);
-      this.todos.push(res)
+      if(res) {
+        this.todos.push(res)
+      }
     });
 
     this.todoService.getAll()

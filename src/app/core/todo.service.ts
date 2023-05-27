@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { API, graphqlOperation } from 'aws-amplify';
-import { GraphQLQuery, GraphQLSubscription } from '@aws-amplify/api';
-import { BehaviorSubject, from, of } from 'rxjs';
+import { GraphQLQuery } from '@aws-amplify/api';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class TodoService {
     API.graphql(graphqlOperation(query)).subscribe({
       next: (eventData: any) => {
         console.log('EVENT DATA : ', eventData);
-        this.onCreate.next(eventData.value.data.onCreateTodo);
+        this.onCreate.next(eventData?.value?.data?.onCreateTodo);
       }
     });
   }
