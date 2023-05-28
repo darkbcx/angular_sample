@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { KmpComponent } from './pages/kmp/kmp.component';
-import { authGuard } from './core/auth.guard';
+import { authGuard } from './core';
 
 const routes: Routes = [
   {

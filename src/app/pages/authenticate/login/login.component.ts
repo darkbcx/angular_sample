@@ -8,7 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { AuthService } from 'src/app/core/auth.service';
+import { AuthService } from 'src/app/core';
 
 @Component({
   selector: 'app-login',

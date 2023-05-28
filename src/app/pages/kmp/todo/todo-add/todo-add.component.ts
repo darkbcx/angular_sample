@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { TodoService } from 'src/app/core/todo.service';
+import { TodoService } from 'src/app/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogAlertComponent } from 'src/app/shared/dialog-alert/dialog-alert.component';
 import { RouterModule,Router } from '@angular/router';
