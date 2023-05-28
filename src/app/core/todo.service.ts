@@ -126,6 +126,35 @@ export class TodoService {
 
   }
 
+  async getTodo(todoId: string) {
+    const query = /* GraphQL */ `
+      query GetTodo($id: ID!) {
+        getTodo(id: $id) {
+          id
+          name
+          description
+        }
+      }
+    `;
+
+    try {
+      const result = await API.graphql<GraphQLQuery<any>>(
+        {
+          query,
+          variables: { id: todoId },
+          authMode: 'AMAZON_COGNITO_USER_POOLS'
+        }
+      )
+
+      if (result.errors) throw result.errors
+
+      return result.data?.getTodo;
+    } catch (err) {
+      throw err;
+    }
+
+  }
+
   async deleteTodo(todoId: string) {
     const query = /* GraphQL */ `
       mutation DeleteTodo(

@@ -31,6 +31,10 @@ const routes: Routes = [
         path: 'todo/add',
         loadComponent: () => import('./pages/kmp/todo/todo-add/todo-add.component').then(c => c.TodoAddComponent)
       },
+      {
+        path: 'todo/edit/:id',
+        loadComponent: () => import('./pages/kmp/todo/todo-edit/todo-edit.component').then(c => c.TodoEditComponent)
+      },
     ]
   },
   { path: '**', pathMatch: 'full', redirectTo: '' }

@@ -1,0 +1,17 @@
+<h1>Edit Todo</h1>
+
+<form [formGroup]="todoForm" (ngSubmit)="onSubmit(todoForm)">
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" placeholder="name" />
+    <mat-error *ngIf="todoForm.get('name')?.invalid">Name Error</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <input matInput formControlName="description" placeholder="description" />
+  </mat-form-field>
+  <div class="button-container">
+    <button mat-raised-button color="primary" type="submit" [disabled]="todoForm.invalid || isSubmitting || todoForm.pristine">SAVE</button>
+    <button mat-raised-button color="warn" type="button" [disabled]="isSubmitting" routerLink="/todo">CANCEL</button>
+  </div>
+</form>
