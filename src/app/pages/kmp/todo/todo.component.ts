@@ -6,13 +6,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogConfirmComponent } from 'src/app/shared';
-import { from, map, of, switchMap } from 'rxjs';
+import { from, of, switchMap } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-todo',
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     MatDialogModule,
     MatTableModule,
     MatIconModule,

@@ -26,7 +26,11 @@ const routes: Routes = [
       {
         path: 'todo',
         loadComponent: () => import('./pages/kmp/todo/todo.component').then(c => c.TodoComponent)
-      }
+      },
+      {
+        path: 'todo/add',
+        loadComponent: () => import('./pages/kmp/todo/todo-add/todo-add.component').then(c => c.TodoAddComponent)
+      },
     ]
   },
   { path: '**', pathMatch: 'full', redirectTo: '' }
