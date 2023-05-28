@@ -10,5 +10,9 @@
     <mat-label>Description</mat-label>
     <input matInput formControlName="description" placeholder="description" />
   </mat-form-field>
-  <button mat-raised-button color="primary" type="submit" [disabled]="todoForm.invalid || isSubmitting">SAVE</button>
+  <div class="button-container">
+    <button mat-raised-button color="primary" type="submit" [disabled]="todoForm.invalid || isSubmitting">SAVE</button>
+    <button mat-raised-button color="warn" type="button" [disabled]="isSubmitting" routerLink="/todo">CANCEL</button>
+
+  </div>
 </form>

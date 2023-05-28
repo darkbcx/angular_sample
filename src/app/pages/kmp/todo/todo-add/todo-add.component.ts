@@ -44,7 +44,7 @@ export class TodoAddComponent implements OnInit {
     this.dialog
       .open(DialogAlertComponent, {
         data: {
-          caption: 'Todo Added',
+          caption,
           okCaption: 'Continue'
         }
       })
