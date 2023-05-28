@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogConfirmComponent } from 'src/app/shared';
-import { from, of, switchMap } from 'rxjs';
+import { Subscription, from, of, switchMap } from 'rxjs';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -23,29 +23,45 @@ import { RouterModule } from '@angular/router';
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.scss']
 })
-export class TodoComponent implements OnInit {
+export class TodoComponent implements OnInit, OnDestroy {
   private todoService = inject(TodoService);
 
   dialog = inject(MatDialog);
   displayedColumns: string[] = ['name', 'description', 'action'];
   todos: any[] = [];
+  onCreateSubscription = this.todoService.onCreate.subscribe(res => {
+    console.log('ON CREATE SUB : ', res);
+    if (res) this.todos.push(res)
+  });
+  onDeleteSubscription = this.todoService.onDelete.subscribe(res => {
+    console.log('ON DELETE SUB : ', res);
+    if (res) {
+      this.todos = this.todos.filter(el => el.id !== res.id)
+    }
+  });
+  onUpdateSubscription = this.todoService.onUpdate.subscribe(res => {
+    console.log('ON UPDATE SUB : ', res);
+    if (res) {
+      this.todos = this.todos.map(el => {
+        if (el.id === res.id) {
+          return res;
+        } else {
+          return el;
+        }
+      })
+    }
+  });
 
   ngOnInit(): void {
-    this.todoService.onCreate.subscribe(res => {
-      console.log('ON CREATE SUB : ', res);
-      if (res) this.todos.push(res)
-    });
-
-    this.todoService.onDelete.subscribe(res => {
-      console.log('ON DELETE SUB : ', res);
-      if(res) {
-        this.todos = this.todos.filter(el => el.id !== res.id)
-      }
-    });
-
     this.todoService.getAll()
       .then(todos => this.todos = todos)
       .catch(err => console.log('ERR : ', err))
+  }
+
+  ngOnDestroy(): void {
+    this.onCreateSubscription.unsubscribe();
+    this.onDeleteSubscription.unsubscribe();
+    this.onUpdateSubscription.unsubscribe();
   }
 
   deleteTodo(todoId: string) {

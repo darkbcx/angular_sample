@@ -11,10 +11,12 @@ export class TodoService {
   constructor() {
     this.onCreateSubscribeInit();
     this.onDeleteSubscribeInit();
+    this.onUpdateSubscribeInit();
   }
 
   onCreate = new BehaviorSubject<any>(null);
   onDelete = new BehaviorSubject<any>(null);
+  onUpdate = new BehaviorSubject<any>(null);
 
   private onCreateSubscribeInit() {
     const query = /* GraphQL */ `
@@ -58,6 +60,28 @@ export class TodoService {
     });
   }
 
+  private onUpdateSubscribeInit() {
+    const query = /* GraphQL */ `
+      subscription OnUpdateTodo($filter: ModelSubscriptionTodoFilterInput) {
+        onUpdateTodo(filter: $filter) {
+          id
+          name
+          description
+          createdAt
+          updatedAt
+        }
+      }
+    `;
+
+    // @ts-ignore
+    API.graphql(graphqlOperation(query)).subscribe({
+      next: (eventData: any) => {
+        console.log('ON UPDATE EVENT DATA : ', eventData);
+        this.onUpdate.next(eventData?.value?.data?.onUpdateTodo);
+      }
+    });
+  }
+
   async getAll() {
     const query = /* GraphQL */ `
       query ListTodos(
@@ -97,6 +121,42 @@ export class TodoService {
         $condition: ModelTodoConditionInput
       ) {
         createTodo(input: $input, condition: $condition) {
+          id
+          name
+          description
+          createdAt
+          updatedAt
+        }
+      }
+    `;
+
+    try {
+      const result = await API.graphql<GraphQLQuery<any>>(
+        {
+          query,
+          variables: {
+            input: todo
+          },
+          authMode: 'AMAZON_COGNITO_USER_POOLS'
+        }
+      )
+
+      if (result.errors) throw result.errors
+
+      return result;
+    } catch (err) {
+      throw err;
+    }
+
+  }
+
+  async updateTodo(todo: ITodo) {
+    const query = /* GraphQL */ `
+      mutation UpdateTodo(
+        $input: UpdateTodoInput!
+        $condition: ModelTodoConditionInput
+      ) {
+        updateTodo(input: $input, condition: $condition) {
           id
           name
           description

@@ -38,6 +38,7 @@ export class TodoEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.todoForm = this.fb.group({
+      id: [''],
       name: ['', Validators.required],
       description: [''],
     })
@@ -59,6 +60,7 @@ export class TodoEditComponent implements OnInit {
           this.isSubmitting = false;
           if (params) {
             this.todoForm.patchValue({
+              id: params.id,
               name: params.name,
               description: params.description,
             })
@@ -90,6 +92,21 @@ export class TodoEditComponent implements OnInit {
     this.isSubmitting = true;
     console.log('VALID : ', todoForm.valid ? 'YES' : 'NO')
     console.log(todoForm.value);
+    try {
+      const res = await this.todoService.updateTodo(todoForm.value);
+      console.log('EDIT RESULT : ', res);
+      this.showAlert('Todo Updated', () => {
+        console.log('UPDATED');
+        this.isSubmitting = false;
+        this.router.navigate(['/todo'])
+      })
+    } catch(err) {
+      this.showAlert('Error Updating Todo', () => {
+        console.log('ERROR : ', err);
+        this.isSubmitting = false;
+      })
+
+    }
   }
 
 }
