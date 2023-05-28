@@ -1,1 +1,14 @@
-<p>todo-add works!</p>
+<h1>Add Todo</h1>
+
+<form [formGroup]="todoForm" (ngSubmit)="onSubmit(todoForm)">
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" placeholder="name" />
+    <mat-error *ngIf="todoForm.get('name')?.invalid">Name Error</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <input matInput formControlName="description" placeholder="description" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit" [disabled]="todoForm.invalid || isSubmitting">SAVE</button>
+</form>

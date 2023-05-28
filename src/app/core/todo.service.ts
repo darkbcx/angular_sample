@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { API, graphqlOperation } from 'aws-amplify';
 import { GraphQLQuery } from '@aws-amplify/api';
 import { BehaviorSubject } from 'rxjs';
+import { ITodo } from '../shared';
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +84,42 @@ export class TodoService {
       if (result.errors) throw result.errors
 
       return result.data.listTodos.items;
+    } catch (err) {
+      throw err;
+    }
+
+  }
+
+  async createTodo(todo: ITodo) {
+    const query =  /* GraphQL */ `
+      mutation CreateTodo(
+        $input: CreateTodoInput!
+        $condition: ModelTodoConditionInput
+      ) {
+        createTodo(input: $input, condition: $condition) {
+          id
+          name
+          description
+          createdAt
+          updatedAt
+        }
+      }
+    `;
+
+    try {
+      const result = await API.graphql<GraphQLQuery<any>>(
+        {
+          query,
+          variables: {
+            input: todo
+          },
+          authMode: 'AMAZON_COGNITO_USER_POOLS'
+        }
+      )
+
+      if (result.errors) throw result.errors
+
+      return result;
     } catch (err) {
       throw err;
     }
