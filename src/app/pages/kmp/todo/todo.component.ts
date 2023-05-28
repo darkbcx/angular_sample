@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogConfirmComponent } from 'src/app/shared';
-import { map } from 'rxjs';
+import { from, map, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-todo',
@@ -34,12 +34,19 @@ export class TodoComponent implements OnInit {
       if (res) this.todos.push(res)
     });
 
+    this.todoService.onDelete.subscribe(res => {
+      console.log('ON DELETE SUB : ', res);
+      if(res) {
+        this.todos = this.todos.filter(el => el.id !== res.id)
+      }
+    });
+
     this.todoService.getAll()
       .then(todos => this.todos = todos)
       .catch(err => console.log('ERR : ', err))
   }
 
-  confirmDeleteTodo(todoId: string) {
+  deleteTodo(todoId: string) {
     console.log('TODO ID : ', todoId);
     this.dialog
       .open(DialogConfirmComponent, {
@@ -47,14 +54,18 @@ export class TodoComponent implements OnInit {
       })
       .afterClosed()
       .pipe(
-        map(res => {
-          if(res === 'OK') {
-            return 'DELETING'
+        switchMap(res => {
+          if (res === 'OK') {
+            return from(this.todoService.deleteTodo(todoId))
           }
-          return 'CANCEL DELETING'
+          return of('CANCEL DELETING')
         })
       )
-      .subscribe(res => console.log(res))
+      .subscribe({
+        next: res => console.log('NEXT : ', res),
+        error: err => console.log('ERROR : ', err),
+        complete: () => console.log('COMPLETE')
+      })
   }
 
 }
