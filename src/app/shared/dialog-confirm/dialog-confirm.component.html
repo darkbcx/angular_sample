@@ -1,0 +1,7 @@
+<div class="dialog-container">
+  <h3>{{ data.caption }}</h3>
+  <div class="button-container">
+    <button mat-raised-button color="primary" (click)="dialogRef.close('OK')">{{ data.okCaption || 'OK' }}</button>
+    <button mat-raised-button color="warn" (click)="dialogRef.close()">{{ data.cancelCaption || 'CANCEL' }}</button>
+  </div>
+</div>
